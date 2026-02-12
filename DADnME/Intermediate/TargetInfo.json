@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "DADnME",
+			"Path": "..\\Source\\DADnME.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "DADnMEEditor",
+			"Path": "..\\Source\\DADnMEEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
