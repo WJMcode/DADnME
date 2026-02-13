@@ -76,3 +76,4 @@ DerivedDataCache/*
 
 # else
 DADnME_Project_메모.txt
+*.pdb
