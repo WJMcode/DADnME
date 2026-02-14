@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DADnMEModuleRules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Development")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f96add81225d8e500c60f17d6834e76aa1481420")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fffdc37f22a29c36f00f2d6bd5c557bbdca32973")]
 [assembly: System.Reflection.AssemblyProductAttribute("DADnMEModuleRules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DADnMEModuleRules")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

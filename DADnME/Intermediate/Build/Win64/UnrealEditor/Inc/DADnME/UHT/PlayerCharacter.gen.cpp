@@ -43,6 +43,10 @@ struct Z_Construct_UClass_APlayerCharacter_Statics
 		{ "Category", "Character_Stats" },
 		{ "ModuleRelativePath", "Public/Player/PlayerCharacter.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DoubleTapThreshold_MetaData[] = {
+		{ "Category", "Character_Stats" },
+		{ "ModuleRelativePath", "Public/Player/PlayerCharacter.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IMC_Player_MetaData[] = {
 		{ "Category", "Input" },
 		{ "ModuleRelativePath", "Public/Player/PlayerCharacter.h" },
@@ -51,11 +55,17 @@ struct Z_Construct_UClass_APlayerCharacter_Statics
 		{ "Category", "Input" },
 		{ "ModuleRelativePath", "Public/Player/PlayerCharacter.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IA_Run_MetaData[] = {
+		{ "Category", "Input" },
+		{ "ModuleRelativePath", "Public/Player/PlayerCharacter.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_SprintSpeed;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_WalkSpeed;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_DoubleTapThreshold;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_IMC_Player;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_IA_Move;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_IA_Run;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -65,13 +75,17 @@ struct Z_Construct_UClass_APlayerCharacter_Statics
 };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlayerCharacter_Statics::NewProp_SprintSpeed = { "SprintSpeed", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerCharacter, SprintSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SprintSpeed_MetaData), NewProp_SprintSpeed_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlayerCharacter_Statics::NewProp_WalkSpeed = { "WalkSpeed", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerCharacter, WalkSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_WalkSpeed_MetaData), NewProp_WalkSpeed_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlayerCharacter_Statics::NewProp_DoubleTapThreshold = { "DoubleTapThreshold", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerCharacter, DoubleTapThreshold), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DoubleTapThreshold_MetaData), NewProp_DoubleTapThreshold_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlayerCharacter_Statics::NewProp_IMC_Player = { "IMC_Player", nullptr, (EPropertyFlags)0x0114000000010001, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerCharacter, IMC_Player), Z_Construct_UClass_UInputMappingContext_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IMC_Player_MetaData), NewProp_IMC_Player_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlayerCharacter_Statics::NewProp_IA_Move = { "IA_Move", nullptr, (EPropertyFlags)0x0114000000010001, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerCharacter, IA_Move), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IA_Move_MetaData), NewProp_IA_Move_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_APlayerCharacter_Statics::NewProp_IA_Run = { "IA_Run", nullptr, (EPropertyFlags)0x0114000000010001, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlayerCharacter, IA_Run), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IA_Run_MetaData), NewProp_IA_Run_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_APlayerCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerCharacter_Statics::NewProp_SprintSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerCharacter_Statics::NewProp_WalkSpeed,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerCharacter_Statics::NewProp_DoubleTapThreshold,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerCharacter_Statics::NewProp_IMC_Player,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerCharacter_Statics::NewProp_IA_Move,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlayerCharacter_Statics::NewProp_IA_Run,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_APlayerCharacter_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_APlayerCharacter_Statics::DependentSingletons[])() = {
@@ -114,10 +128,10 @@ APlayerCharacter::~APlayerCharacter() {}
 struct Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_PlayerCharacter_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_APlayerCharacter, APlayerCharacter::StaticClass, TEXT("APlayerCharacter"), &Z_Registration_Info_UClass_APlayerCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlayerCharacter), 3869470331U) },
+		{ Z_Construct_UClass_APlayerCharacter, APlayerCharacter::StaticClass, TEXT("APlayerCharacter"), &Z_Registration_Info_UClass_APlayerCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlayerCharacter), 1850939753U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_PlayerCharacter_h_3964671060(TEXT("/Script/DADnME"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_PlayerCharacter_h_4216913252(TEXT("/Script/DADnME"),
 	Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_PlayerCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_PlayerCharacter_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

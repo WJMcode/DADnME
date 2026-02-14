@@ -30,32 +30,21 @@ struct Z_Construct_UClass_UInputTriggerDoubleTap_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n * \xef\xbf\xbd\xc3\xb7\xef\xbf\xbd\xef\xbf\xbd\xcc\xbe\xee\xb0\xa1 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xcf\xbf\xef\xbf\xbd \xef\xbf\xbd\xde\xb8\xef\xbf\xbd\xef\xbf\xbd\xe2\xb8\xa6 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xc5\xac\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \n */" },
+		{ "Comment", "/**\n * \xef\xbf\xbd\xc3\xb7\xef\xbf\xbd\xef\xbf\xbd\xcc\xbe\xee\xb0\xa1 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xcf\xbf\xef\xbf\xbd \xef\xbf\xbd\xde\xb8\xef\xbf\xbd\xef\xbf\xbd\xe2\xb8\xa6 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xc5\xac\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ,\n * \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd, PlayerCharacter\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xd8\xb0\xef\xbf\xbd\n */" },
 #endif
 		{ "IncludePath", "Player/Input/InputTriggerDoubleTap.h" },
 		{ "ModuleRelativePath", "Public/Player/Input/InputTriggerDoubleTap.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "\xef\xbf\xbd\xc3\xb7\xef\xbf\xbd\xef\xbf\xbd\xcc\xbe\xee\xb0\xa1 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xcf\xbf\xef\xbf\xbd \xef\xbf\xbd\xde\xb8\xef\xbf\xbd\xef\xbf\xbd\xe2\xb8\xa6 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xc5\xac\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd" },
+		{ "ToolTip", "\xef\xbf\xbd\xc3\xb7\xef\xbf\xbd\xef\xbf\xbd\xcc\xbe\xee\xb0\xa1 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xcf\xbf\xef\xbf\xbd \xef\xbf\xbd\xde\xb8\xef\xbf\xbd\xef\xbf\xbd\xe2\xb8\xa6 \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xc5\xac\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd ,\n\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd, PlayerCharacter\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd \xef\xbf\xbd\xd8\xb0\xef\xbf\xbd" },
 #endif
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DoubleTapThreshold_MetaData[] = {
-		{ "Category", "Trigger" },
-		{ "ModuleRelativePath", "Public/Player/Input/InputTriggerDoubleTap.h" },
-	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FFloatPropertyParams NewProp_DoubleTapThreshold;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UInputTriggerDoubleTap>::IsAbstract,
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UInputTriggerDoubleTap_Statics::NewProp_DoubleTapThreshold = { "DoubleTapThreshold", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UInputTriggerDoubleTap, DoubleTapThreshold), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DoubleTapThreshold_MetaData), NewProp_DoubleTapThreshold_MetaData) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UInputTriggerDoubleTap_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInputTriggerDoubleTap_Statics::NewProp_DoubleTapThreshold,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UInputTriggerDoubleTap_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UInputTriggerDoubleTap_Statics::DependentSingletons[])() = {
 	(UObject* (*)())Z_Construct_UClass_UInputTrigger,
 	(UObject* (*)())Z_Construct_UPackage__Script_DADnME,
@@ -67,11 +56,11 @@ const UECodeGen_Private::FClassParams Z_Construct_UClass_UInputTriggerDoubleTap_
 	&StaticCppClassTypeInfo,
 	DependentSingletons,
 	nullptr,
-	Z_Construct_UClass_UInputTriggerDoubleTap_Statics::PropPointers,
+	nullptr,
 	nullptr,
 	UE_ARRAY_COUNT(DependentSingletons),
 	0,
-	UE_ARRAY_COUNT(Z_Construct_UClass_UInputTriggerDoubleTap_Statics::PropPointers),
+	0,
 	0,
 	0x401030A6u,
 	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UInputTriggerDoubleTap_Statics::Class_MetaDataParams), Z_Construct_UClass_UInputTriggerDoubleTap_Statics::Class_MetaDataParams)
@@ -97,10 +86,10 @@ UInputTriggerDoubleTap::~UInputTriggerDoubleTap() {}
 struct Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_Input_InputTriggerDoubleTap_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UInputTriggerDoubleTap, UInputTriggerDoubleTap::StaticClass, TEXT("UInputTriggerDoubleTap"), &Z_Registration_Info_UClass_UInputTriggerDoubleTap, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UInputTriggerDoubleTap), 2966992195U) },
+		{ Z_Construct_UClass_UInputTriggerDoubleTap, UInputTriggerDoubleTap::StaticClass, TEXT("UInputTriggerDoubleTap"), &Z_Registration_Info_UClass_UInputTriggerDoubleTap, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UInputTriggerDoubleTap), 154612522U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_Input_InputTriggerDoubleTap_h_2302975856(TEXT("/Script/DADnME"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_Input_InputTriggerDoubleTap_h_2752977825(TEXT("/Script/DADnME"),
 	Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_Input_InputTriggerDoubleTap_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_DADnME_Source_DADnME_Public_Player_Input_InputTriggerDoubleTap_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

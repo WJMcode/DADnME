@@ -5,35 +5,45 @@
 #include "Player/Input/InputTriggerDoubleTap.h"
 
 
-ETriggerState UInputTriggerDoubleTap::UpdateState_Implementation(const UEnhancedPlayerInput* PlayerInput, FInputActionValue ModifiedValue, float DeltaTime)
-{
-	const FVector2D CurrentDir = ModifiedValue.Get<FVector2D>();
-
-	if (CurrentDir.IsNearlyZero())
-	{
-		return ETriggerState::None;
-	}
-
-	CurrentDir.GetSafeNormal();
-
-	/*	
-		Dot 값	의미
-		1.0		완전히 같은 방향
-		0.0		수직
-		- 1.0	반대 방향
-	*/
-	float Dot = FVector2D::DotProduct(CurrentDir, LastDirection);
-
-	const float CurrentTime = PlayerInput->GetWorld()->GetTimeSeconds();
-
-	// ex) CurrentTime 5.2초, LastTapTime가 5.0초 = 0.2초, DoubleTapThreshold 값을 넘지 않았다면 더블탭 작동
-	if (Dot > 0.9f && CurrentTime - LastTapTime <= DoubleTapThreshold)
-	{
-		LastTapTime = -1.f;
-		return ETriggerState::Triggered;
-	}
-
-	LastDirection = CurrentDir;
-	LastTapTime = CurrentTime;
-	return ETriggerState::None;
-}
+//ETriggerState UInputTriggerDoubleTap::UpdateState_Implementation(const UEnhancedPlayerInput* PlayerInput, FInputActionValue ModifiedValue, float DeltaTime)
+//{
+//    const float CurrentTime = PlayerInput->GetWorld()->GetTimeSeconds();
+//
+//    const float CurrMagSq = ModifiedValue.GetMagnitudeSq();
+//    const float LastMagSq = LastValue.GetMagnitudeSq();
+//    const float ActSq = ActuationThreshold * ActuationThreshold;
+//
+//    // "이번 프레임에 새로 눌렸는가?"
+//    const bool bJustPressed = CurrMagSq >= ActSq && LastMagSq < ActSq;
+//
+//    if (!bJustPressed)
+//    {
+//        return ETriggerState::None;
+//    }
+//
+//    // 방향 추출
+//    FVector2D Dir = ModifiedValue.Get<FVector2D>().GetSafeNormal();
+//
+//    // 첫 탭
+//    if (LastTapTime < 0.f)
+//    {
+//        LastTapTime = CurrentTime;
+//        LastDirection = Dir;
+//        return ETriggerState::Ongoing;
+//    }
+//
+//    // 두 번째 탭
+//    const float Delta = CurrentTime - LastTapTime;
+//    const float Dot = FVector2D::DotProduct(Dir, LastDirection);
+//
+//    if (Delta <= DoubleTapThreshold && Dot > 0.9f)
+//    {
+//        LastTapTime = -1.f;
+//        return ETriggerState::Triggered;
+//    }
+//
+//    // 실패 → 다시 첫 탭으로
+//    LastTapTime = CurrentTime;
+//    LastDirection = Dir;
+//    return ETriggerState::Ongoing;
+//}

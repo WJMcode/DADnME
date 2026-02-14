@@ -45,14 +45,39 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+		EIC->BindAction(IA_Move, ETriggerEvent::Completed, this, &APlayerCharacter::ReadySprint);
+		//EIC->BindAction(IA_Run, ETriggerEvent::Triggered, this, &APlayerCharacter::StartRun);
+		//EIC->BindAction(IA_Run, ETriggerEvent::Canceled, this, &APlayerCharacter::StopRun);
+
 	}
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2D Input = Value.Get<FVector2D>();
+
 	if (Controller)
 	{
+		if (Input == LastDir)
+		{
+			const float CurrentTime = GetWorld()->GetTimeSeconds();
+
+			if (bCanSprint && CurrentTime - LastMoveCalledTime <= DoubleTapThreshold)
+			{
+				GEngine->AddOnScreenDebugMessage(3, 1, FColor::Cyan, FString::Printf(TEXT("CurrentTime - LastPressedTime : %f"), CurrentTime - LastPressedTime));
+
+				StartRun(CurrentTime);
+			}
+			else
+			{
+				bCanSprint = false;
+				StopRun();
+			}
+		}
+		else
+		{
+			LastDir = Input;
+		}
 
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -60,23 +85,47 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 		const FVector Forward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		const FVector Right = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		AddMovementInput(Forward, Input.X);
-		AddMovementInput(Right, Input.Y);
+		float Speed = bIsSprinting ? SprintSpeed : WalkSpeed;
+
+		GetCharacterMovement()->MaxWalkSpeed = Speed;
+
+		AddMovementInput(Forward, Input.Y);
+		AddMovementInput(Right, Input.X);
 	}
-
-	// 스프린트용 코드
-	//FVector2D Input = Value.Get<FVector2D>();
-
-	//float Speed = bIsSprinting ? SprintSpeed : WalkSpeed;
-
-	//GetCharacterMovement()->MaxWalkSpeed = Speed;
-
-	//AddMovementInput(GetActorForwardVector(), Input.X);
-	//AddMovementInput(GetActorRightVector(), Input.Y);
 }
 
-void APlayerCharacter::OnSprintTriggered(const FInputActionValue& Value)
+void APlayerCharacter::ReadySprint()
 {
-	bIsSprinting = true;
+	const float CurrentTime = GetWorld()->GetTimeSeconds();
+	LastMoveCalledTime = CurrentTime;
+
+	bCanSprint = true;
+
+	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Magenta, TEXT("test"), true, FVector2D(10, 10));
 }
 
+void APlayerCharacter::StartRun(const float CurrentTime)
+{
+	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Blue, TEXT("Run"));
+	bIsSprinting = true;
+
+	LastMoveCalledTime = CurrentTime;
+}
+void APlayerCharacter::StopRun()
+{
+	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Stop"));
+	bIsSprinting = false;
+}
+
+//
+//void APlayerCharacter::StartRun(const FInputActionValue& Value)
+//{
+//	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Blue, TEXT("Run"));
+//	bIsSprinting = true;
+//}
+//
+//void APlayerCharacter::StopRun(const FInputActionValue& Value)
+//{
+//	GEngine->AddOnScreenDebugMessage(1, 1, FColor::Red, TEXT("Stop"));
+//	bIsSprinting = false;
+//}
