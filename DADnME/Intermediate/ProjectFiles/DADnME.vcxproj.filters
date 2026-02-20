@@ -57,12 +57,6 @@
     <ClCompile Include="..\..\Source\DADnME\Private\Player\PlayerCharacter.cpp">
       <Filter>Source\DADnME\Private\Player</Filter>
     </ClCompile>
-    <Filter Include="Source\DADnME\Private\Player\Input">
-      <UniqueIdentifier>{F7F95811-19D8-3D16-8F81-FC480AB4FF48}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\DADnME\Private\Player\Input\InputTriggerDoubleTap.cpp">
-      <Filter>Source\DADnME\Private\Player\Input</Filter>
-    </ClCompile>
     <Filter Include="Source\DADnME\Public">
       <UniqueIdentifier>{FBAEE00B-53D7-342E-B35A-B12EB0F6EDCB}</UniqueIdentifier>
     </Filter>
@@ -80,12 +74,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\DADnME\Public\Player\PlayerCharacter.h">
       <Filter>Source\DADnME\Public\Player</Filter>
-    </ClInclude>
-    <Filter Include="Source\DADnME\Public\Player\Input">
-      <UniqueIdentifier>{CA07CC2E-C931-38FF-84DF-D8AC5EFE4ACC}</UniqueIdentifier>
-    </Filter>
-    <ClInclude Include="..\..\Source\DADnME\Public\Player\Input\InputTriggerDoubleTap.h">
-      <Filter>Source\DADnME\Public\Player\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
