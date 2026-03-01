@@ -12,7 +12,7 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
-	//PlayerMoveState = EMoveState::Stop;
+	PlayerMoveState = EMoveState::Idle;
 
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -21,7 +21,7 @@ APlayerCharacter::APlayerCharacter()
 	SpringArm->SetupAttachment(GetRootComponent());
 
 	SpringArm->bUsePawnControlRotation = false;
-	SpringArm->TargetArmLength = TargetArmLength;
+	SpringArm->TargetArmLength = DefaultTargetArmLength;
 	SpringArm->SetWorldLocationAndRotation(SpringArmLocation, SpringArmRotation);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -48,6 +48,11 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (PlayerMoveState == EMoveState::Stop)
+	{
+		ResetCameraSetting(DeltaTime);
+	}
 
 	//GEngine->AddOnScreenDebugMessage(
 	//	-1,                    // Key
@@ -92,6 +97,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
+void APlayerCharacter::SetPlayerMoveState(const EMoveState MoveState)
+{
+	PlayerMoveState = MoveState;
+}
+
 void APlayerCharacter::StartedMove(const FInputActionValue& Value)
 {
 	FVector2D Input = Value.Get<FVector2D>();
@@ -114,40 +124,12 @@ void APlayerCharacter::StartedMove(const FInputActionValue& Value)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("APlayerCharacter::StartedMove 예외 발생"));
 	}
-
-	//// Stop 상태에서 처음 Move키를 눌렀을 때
-	//if (PlayerMoveState == EMoveState::Stop && FMath::IsNearlyZero(MoveStartTime))
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Green, TEXT("if"), true, FVector2D(5.f, 5.f));
-
-	//	PlayerMoveState = EMoveState::Move;
-	//	MoveStartTime = CurrentTime;
-	//	LastDir = Input;
-	//}
-	//// Stop 상태이지만 Move키를 같은 방향으로 한번 더 눌렀을 때
-	//else if (PlayerMoveState == EMoveState::Stop && Input == LastDir)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Blue, TEXT("same direction"), true, FVector2D(5.f, 5.f));
-	//	// DoubleTapThreshold 내에 Move키를 한번 더 눌렀다면, 달리기 상태로 전환
-	//	if (CurrentTime - MoveStartTime <= DoubleTapThreshold)
-	//	{
-	//		PlayerMoveState = EMoveState::Sprint;
-	//		MoveStartTime = 0.0f;
-	//	}
-	//}
-	//// Move키를 다른 방향으로 눌렀을 때
-	//else if(PlayerMoveState == EMoveState::Stop && Input != LastDir)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Blue, TEXT("other dir"), true, FVector2D(5.f, 5.f));
-	//	PlayerMoveState = EMoveState::Move;
-	//	MoveStartTime = 0.0f;
-	//	LastDir = Input;
-	//}
-
 }
 
 void APlayerCharacter::TriggeredMove(const FInputActionValue& Value)
 {
+	SetPlayerMoveState(EMoveState::Move);
+
 	FVector2D Input = Value.Get<FVector2D>();
 
 	if (Controller)
@@ -173,19 +155,6 @@ void APlayerCharacter::TriggeredMove(const FInputActionValue& Value)
 			GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 		}
 
-		//if (PlayerMoveState == EMoveState::Move)
-		//{
-		//	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-		//}
-		//else if (PlayerMoveState == EMoveState::Sprint)
-		//{	
-		//	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-
-		//	// 만약 달리는 중이라면 카메라 효과
-		//	float DeltaTime = GetWorld()->GetDeltaSeconds();
-		//	SprintCameraShake(DeltaTime);
-		//}
-
 		AddMovementInput(Forward, Input.Y);
 		AddMovementInput(Right, Input.X);
 	}
@@ -205,19 +174,8 @@ void APlayerCharacter::CompletedMove()
 		PrevDir = LastDir;
 		LastDir = FVector2D::ZeroVector;
 
-		ResetCameraSetting();
+		SetPlayerMoveState(EMoveState::Stop);
 	}
-
-	//if (PlayerMoveState == EMoveState::Sprint)
-	//{
-	//	MoveStartTime = 0.0f;
-	//	LastDir = FVector2D::ZeroVector;
-
-	//	//float DeltaTime = GetWorld()->GetDeltaSeconds();
-	//	ResetCameraSetting();
-	//}
-
-	//PlayerMoveState = EMoveState::Stop;
 }
 
 void APlayerCharacter::SprintCameraShake(const float DeltaTime)
@@ -239,14 +197,14 @@ void APlayerCharacter::SprintCameraShake(const float DeltaTime)
 		FMath::Sin(GetWorld()->TimeSeconds * 10.f) * 2.f * SpeedAlpha;
 }
 
-void APlayerCharacter::ResetCameraSetting()
+void APlayerCharacter::ResetCameraSetting(const float DeltaTime)
 {
-	// FOV
-	Camera->SetFieldOfView(FieldOfView);
+	// FOV 기본값으로 되돌리기
+	Camera->SetFieldOfView(
+		FMath::FInterpTo(Camera->FieldOfView, DefaultFieldOfView, DeltaTime, 8.f)
+	);
 
-	// SpringArm 길이
-	SpringArm->TargetArmLength = TargetArmLength;
-
-	// 살짝 흔들리는 Offset
-	SpringArm->SocketOffset.Z = 0.0f;
+	// SpringArm 길이 기본값으로 되돌리기
+	SpringArm->TargetArmLength =
+		FMath::FInterpTo(SpringArm->TargetArmLength, DefaultTargetArmLength, DeltaTime, 6.f);
 }

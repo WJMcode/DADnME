@@ -7,13 +7,14 @@
 #include "InputMappingContext.h"
 #include "PlayerCharacter.generated.h"
 
-//UENUM(BlueprintType) 
-//enum class EMoveState : uint8
-//{
-//	Stop UMETA(DisplayName = "Stop"),
-//	Move UMETA(DisplayName = "Move"),
-//	Sprint UMETA(DisplayName = "Sprint")
-//};
+UENUM(BlueprintType) 
+enum class EMoveState : uint8
+{
+	Idle UMETA(DisplayName = "Idle"),
+	Stop UMETA(DisplayName = "Stop"),
+	Move UMETA(DisplayName = "Move"),
+	Sprint UMETA(DisplayName = "Sprint")
+};
 
 UCLASS()
 class DADNME_API APlayerCharacter : public ACharacter
@@ -54,8 +55,8 @@ private:
 	// SpringArm, Camera ฐüทร
 	FVector SpringArmLocation = FVector(76.0f, 0.0f, 31.0f);
 	FRotator SpringArmRotation = FRotator(-22.0f, 0.0f, 0.0f);
-	float TargetArmLength = 300.0f;
-	float FieldOfView = 90.0f;
+	float DefaultTargetArmLength = 300.0f;
+	float DefaultFieldOfView = 90.0f;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -80,10 +81,12 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	void SetPlayerMoveState(const EMoveState MoveState);
+
 	void StartedMove(const FInputActionValue& Value);
 	void TriggeredMove(const FInputActionValue& Value);
 	void CompletedMove();
 	void SprintCameraShake(const float DeltaTime);
-	void ResetCameraSetting(/*const float DeltaTime*/);
+	void ResetCameraSetting(const float DeltaTime);
 
 };
