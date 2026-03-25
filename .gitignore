@@ -67,6 +67,9 @@ Build/*/**
 # ================================
 *_BuiltData.uasset
 
+*.uasset
+*.umap
+
 # Source art (원본 리소스)
 SourceArt/**/*.png
 SourceArt/**/*.tga

@@ -11,7 +11,7 @@ UENUM(BlueprintType)
 enum class EMoveState : uint8
 {
 	Idle UMETA(DisplayName = "Idle"),
-	Stop UMETA(DisplayName = "Stop"),
+	//Stop UMETA(DisplayName = "Stop"), Idle이랑 같음
 	Move UMETA(DisplayName = "Move"),
 	Sprint UMETA(DisplayName = "Sprint")
 };
@@ -51,12 +51,19 @@ private:
 	//float MoveStartTime = 0.0;
 	float FirstMoveTime = 0.0;
 	float SecondMoveTime = 0.0;
+	float SprintTargetArmLength = 350.0f;
+	float SprintFieldOfView = 120.0f;
 
 	// SpringArm, Camera 관련
-	FVector SpringArmLocation = FVector(76.0f, 0.0f, 31.0f);
+	FVector SpringArmLocation = FVector(0.0f, 0.0f, 31.0f);
 	FRotator SpringArmRotation = FRotator(-22.0f, 0.0f, 0.0f);
+	FVector SpringArmTargetOffset = FVector(76.0f, 0.0f, 0.0f);
+	// 캐릭터 회전을 부드럽게 하기 위한 변수
+	FRotator TargetRotation = FRotator::ZeroRotator;
 	float DefaultTargetArmLength = 300.0f;
 	float DefaultFieldOfView = 90.0f;
+	
+
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -82,6 +89,7 @@ public:
 
 public:
 	void SetPlayerMoveState(const EMoveState MoveState);
+	const EMoveState GetPlayerMoveState();
 
 	void StartedMove(const FInputActionValue& Value);
 	void TriggeredMove(const FInputActionValue& Value);

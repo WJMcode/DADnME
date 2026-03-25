@@ -12,21 +12,27 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
-	PlayerMoveState = EMoveState::Idle;
-
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	PlayerMoveState = EMoveState::Idle;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetRootComponent());
 
 	SpringArm->bUsePawnControlRotation = false;
 	SpringArm->TargetArmLength = DefaultTargetArmLength;
-	SpringArm->SetWorldLocationAndRotation(SpringArmLocation, SpringArmRotation);
+	SpringArm->SetRelativeLocationAndRotation(SpringArmLocation, SpringArmRotation);
+	SpringArm->TargetOffset = FVector(76.0f, 0.0f, 0.0f); // 전방 오프셋
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 	Camera->bUsePawnControlRotation = false;
+
+	// 1. 카메라(컨트롤러)가 도는 방향으로 캐릭터가 억지로 따라 도는 것을 막습니다.
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;  // 이게 핵심!
+	bUseControllerRotationRoll = false;
 }
 
 // Called when the game starts or when spawned
@@ -49,10 +55,24 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (PlayerMoveState == EMoveState::Stop)
+	FRotator Current = GetActorRotation();
+	FRotator Smoothed = FMath::RInterpConstantTo(Current, TargetRotation, DeltaTime, 720.0f); // 720 = 초당 720도
+	SetActorRotation(Smoothed);
+
+
+	if (PlayerMoveState == EMoveState::Idle || PlayerMoveState == EMoveState::Move)
 	{
 		ResetCameraSetting(DeltaTime);
 	}
+
+	// EPlayerMoveState가 열거형 이름이라고 가정할 때
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMoveState"), true);
+	FString StateName = EnumPtr ? EnumPtr->GetNameStringByValue((int64)PlayerMoveState) : TEXT("Invalid");
+
+	GEngine->AddOnScreenDebugMessage(
+		-1, 1.f, FColor::Magenta,
+		FString::Printf(TEXT("PlayerMoveState : %s"), *StateName) // %s와 * 연산자 사용
+	);
 
 	//GEngine->AddOnScreenDebugMessage(
 	//	-1,                    // Key
@@ -102,6 +122,11 @@ void APlayerCharacter::SetPlayerMoveState(const EMoveState MoveState)
 	PlayerMoveState = MoveState;
 }
 
+const EMoveState APlayerCharacter::GetPlayerMoveState()
+{
+	return PlayerMoveState;
+}
+
 void APlayerCharacter::StartedMove(const FInputActionValue& Value)
 {
 	FVector2D Input = Value.Get<FVector2D>();
@@ -128,21 +153,32 @@ void APlayerCharacter::StartedMove(const FInputActionValue& Value)
 
 void APlayerCharacter::TriggeredMove(const FInputActionValue& Value)
 {
-	SetPlayerMoveState(EMoveState::Move);
-
 	FVector2D Input = Value.Get<FVector2D>();
 
 	if (Controller)
 	{
+		SetPlayerMoveState(EMoveState::Move);
+
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		const FVector Forward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		const FVector Right = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
+		// 실제 이동할 방향 벡터
+		FVector MoveDirection = (Forward * Input.Y) + (Right * Input.X);
+
+		if (!MoveDirection.IsNearlyZero())
+		{
+			// 캐릭터를 이동 방향으로 '확' 돌리기 (Snap Rotation)
+			FRotator NewRotation = MoveDirection.Rotation();
+			TargetRotation = NewRotation;
+		}
+
 		// 첫 입력과 두 번째 입력의 방향이 같고 DoubleTapThreshold 안에 두 번 누른 경우
 		if (PrevDir == LastDir && SecondMoveTime - FirstMoveTime <= DoubleTapThreshold)
 		{
+			SetPlayerMoveState(EMoveState::Sprint);
 			GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 
 			// 만약 달리는 중이라면 카메라 효과
@@ -174,27 +210,26 @@ void APlayerCharacter::CompletedMove()
 		PrevDir = LastDir;
 		LastDir = FVector2D::ZeroVector;
 
-		SetPlayerMoveState(EMoveState::Stop);
+		SetPlayerMoveState(EMoveState::Idle);
+
 	}
 }
 
 void APlayerCharacter::SprintCameraShake(const float DeltaTime)
 {
 	// FOV
-	float TargetFOV = 100.f;
 	Camera->SetFieldOfView(
-		FMath::FInterpTo(Camera->FieldOfView, TargetFOV, DeltaTime, 8.f)
+		FMath::FInterpTo(Camera->FieldOfView, SprintFieldOfView, DeltaTime, 8.f)
 	);
 
 	// SpringArm 길이
-	float TargetArm = 340.f;
 	SpringArm->TargetArmLength =
-		FMath::FInterpTo(SpringArm->TargetArmLength, TargetArm, DeltaTime, 6.f);
+		FMath::FInterpTo(SpringArm->TargetArmLength, SprintTargetArmLength, DeltaTime, 6.f);
 
 	// 살짝 흔들리는 Offset
 	float SpeedAlpha = GetVelocity().Size() / GetCharacterMovement()->MaxWalkSpeed;
 	SpringArm->SocketOffset.Z =
-		FMath::Sin(GetWorld()->TimeSeconds * 10.f) * 2.f * SpeedAlpha;
+		FMath::Sin(GetWorld()->TimeSeconds * 30.f) * 5.f * SpeedAlpha;
 }
 
 void APlayerCharacter::ResetCameraSetting(const float DeltaTime)
