@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Player/DnMPlayerController.h"
+#include "Combat/Combo/ComboComponent.h"
 #include "Player/PlayerCharacter.h"
 
 // Sets default values
@@ -33,6 +34,8 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;  // 이게 핵심!
 	bUseControllerRotationRoll = false;
+
+	ComboComponent = CreateDefaultSubobject<UComboComponent>(TEXT("ComboComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -114,6 +117,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &APlayerCharacter::TriggeredMove);
 		// IA_Move와 관련된 모든 키에서 손을 뗐을 때 호출됨(다른 방향을 왔다 갔다가 눌러도 호출되지 않는다.)
 		EIC->BindAction(IA_Move, ETriggerEvent::Completed, this, &APlayerCharacter::CompletedMove);
+
+		// 공격 A
+		EIC->BindAction(IA_AttackA, ETriggerEvent::Started, this, &APlayerCharacter::OnAttackA);
 	}
 }
 
@@ -242,4 +248,9 @@ void APlayerCharacter::ResetCameraSetting(const float DeltaTime)
 	// SpringArm 길이 기본값으로 되돌리기
 	SpringArm->TargetArmLength =
 		FMath::FInterpTo(SpringArm->TargetArmLength, DefaultTargetArmLength, DeltaTime, 6.f);
+}
+
+void APlayerCharacter::OnAttackA(const FInputActionValue& Value)
+{
+	ComboComponent->ReceiveInput(EAttackInput::A);
 }

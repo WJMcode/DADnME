@@ -3,3 +3,7 @@
 
 #include "Enemy/EnemyNormal.h"
 
+AEnemyNormal::AEnemyNormal()
+{
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+}

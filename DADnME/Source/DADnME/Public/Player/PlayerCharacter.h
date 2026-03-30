@@ -72,6 +72,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<class UInputAction> IA_Move;
 
+	// 공격 A
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<class UInputAction> IA_AttackA;
+
+private:
+	// 콤보 관련 컴포넌트
+	UPROPERTY(VisibleAnywhere) 
+	class UComboComponent* ComboComponent;
+
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
@@ -91,10 +100,13 @@ public:
 	void SetPlayerMoveState(const EMoveState MoveState);
 	const EMoveState GetPlayerMoveState();
 
+	// 움직임 관련
 	void StartedMove(const FInputActionValue& Value);
 	void TriggeredMove(const FInputActionValue& Value);
 	void CompletedMove();
 	void SprintCameraShake(const float DeltaTime);
 	void ResetCameraSetting(const float DeltaTime);
 
+	// 공격 관련
+	void OnAttackA(const FInputActionValue& Value);
 };

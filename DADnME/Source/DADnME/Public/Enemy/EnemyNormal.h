@@ -14,4 +14,6 @@ class DADNME_API AEnemyNormal : public AEnemyBase
 {
 	GENERATED_BODY()
 	
+public:
+	AEnemyNormal();
 };
