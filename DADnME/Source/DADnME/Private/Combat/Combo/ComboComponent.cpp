@@ -35,6 +35,11 @@ void UComboComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
+const EComboState UComboComponent::GetComboState()
+{
+    return State;
+}
+
 void UComboComponent::ReceiveInput(const EAttackInput Input)
 {
     switch (State)
@@ -61,12 +66,15 @@ void UComboComponent::ReceiveInput(const EAttackInput Input)
         // 콤보 윈도우 열림 → 다음 콤보 탐색
         for (UComboDataAsset* Next : CurrentCombo->NextCombos)
         {
-            if (Next->TriggerInput == Input)
+            if (Next != nullptr)
             {
-                // 타이머 취소 후 다음 콤보 실행
-                GetWorld()->GetTimerManager().ClearTimer(ComboWindowTimerHandle);
-                ExecuteCombo(Next);
-                return;
+                if (Next->TriggerInput == Input)
+                {
+                    // 타이머 취소 후 다음 콤보 실행
+                    GetWorld()->GetTimerManager().ClearTimer(ComboWindowTimerHandle);
+                    ExecuteCombo(Next);
+                    return;
+                }
             }
         }
         break;

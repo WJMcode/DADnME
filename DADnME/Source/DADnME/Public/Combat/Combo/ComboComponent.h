@@ -49,6 +49,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
+	const EComboState GetComboState();
 	void ReceiveInput(const EAttackInput Input);
 
 private:

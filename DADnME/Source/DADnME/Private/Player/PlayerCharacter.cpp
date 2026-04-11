@@ -135,6 +135,11 @@ const EMoveState APlayerCharacter::GetPlayerMoveState()
 
 void APlayerCharacter::StartedMove(const FInputActionValue& Value)
 {
+	if (ComboComponent->GetComboState() == EComboState::Playing)
+	{
+		return;
+	}
+
 	FVector2D Input = Value.Get<FVector2D>();
 
 	float CurrentTime = GetWorld()->GetTimeSeconds();
@@ -159,6 +164,11 @@ void APlayerCharacter::StartedMove(const FInputActionValue& Value)
 
 void APlayerCharacter::TriggeredMove(const FInputActionValue& Value)
 {
+	if (ComboComponent->GetComboState() == EComboState::Playing)
+	{
+		return;
+	}
+
 	FVector2D Input = Value.Get<FVector2D>();
 
 	if (Controller)
@@ -215,10 +225,10 @@ void APlayerCharacter::CompletedMove()
 
 		PrevDir = LastDir;
 		LastDir = FVector2D::ZeroVector;
-
-		SetPlayerMoveState(EMoveState::Idle);
-
 	}
+
+	// 조건 밖에서 항상 Idle로
+	SetPlayerMoveState(EMoveState::Idle);
 }
 
 void APlayerCharacter::SprintCameraShake(const float DeltaTime)

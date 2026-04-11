@@ -78,3 +78,5 @@ SourceArt/**/*.tga
 # Project specific
 # ================================
 DADnME_Project_메모.txt
+AllCode.txt
+GenerateAllCode.bat
