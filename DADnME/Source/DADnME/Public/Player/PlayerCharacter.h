@@ -30,6 +30,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	TObjectPtr<class UCameraComponent> Camera;
 
+	// 분노
+	UPROPERTY(VisibleAnywhere)
+	class URageComponent* RageComponent;
+
 	// 움직임 관련
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	EMoveState PlayerMoveState;
@@ -63,7 +67,11 @@ private:
 	float DefaultTargetArmLength = 300.0f;
 	float DefaultFieldOfView = 90.0f;
 	
+	// 캐릭터 체력
+	UPROPERTY(EditAnywhere, Category = "Stats")
+	float MaxHP = 100.f;
 
+	float CurrentHP;
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -89,6 +97,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+protected:
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -99,6 +110,8 @@ public:
 public:
 	void SetPlayerMoveState(const EMoveState MoveState);
 	const EMoveState GetPlayerMoveState();
+
+	float GetCurrentHPPercent() const { return CurrentHP / MaxHP; }
 
 	// 움직임 관련
 	void StartedMove(const FInputActionValue& Value);

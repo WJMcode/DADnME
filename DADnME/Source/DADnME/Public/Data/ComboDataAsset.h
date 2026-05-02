@@ -58,4 +58,12 @@ public:
     // 이 공격 후 연결 가능한 다음 공격들
     UPROPERTY(EditAnywhere) 
     TArray<UComboDataAsset*> NextCombos;
+
+    // 히트 정보
+    UPROPERTY(EditAnywhere) 
+    float Damage = 10.f;
+    UPROPERTY(EditAnywhere) 
+    float HitRadius = 50.f;   // 히트 범위
+    UPROPERTY(EditAnywhere) 
+    float HitRange = 100.f;   // 히트 거리
 };

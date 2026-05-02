@@ -2,6 +2,7 @@
 
 
 #include "Enemy/EnemyBase.h"
+#include "Player/DnMPlayerController.h"
 
 // Sets default values
 AEnemyBase::AEnemyBase()
@@ -34,9 +35,17 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	CurrentHP -= DamageAmount;
-	if (CurrentHP <= 0) Die();
-	return DamageAmount;
+    CurrentHP -= DamageAmount;
+    CurrentHP = FMath::Clamp(CurrentHP, 0.f, MaxHP);
+
+    ADnMPlayerController* PC = Cast<ADnMPlayerController>(
+        GetWorld()->GetFirstPlayerController()
+    );
+    // Enemy 자신도 같이 전달
+    if (PC) PC->UpdateEnemyHP(this, CurrentHP / MaxHP);
+
+    if (CurrentHP <= 0) Die();
+    return DamageAmount;
 }
 
 void AEnemyBase::Die()

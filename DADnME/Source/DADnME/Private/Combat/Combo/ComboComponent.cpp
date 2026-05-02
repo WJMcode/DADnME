@@ -1,8 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Kismet/GameplayStatics.h"
 #include "Combat/Combo/ComboComponent.h"
+#include "Combat/Rage/RageComponent.h"
 #include "Player/PlayerCharacter.h"
+#include "Enemy/EnemyBase.h"
 
 // Sets default values for this component's properties
 UComboComponent::UComboComponent()
@@ -133,6 +136,68 @@ void UComboComponent::OnComboWindowClose()
 {
     State = EComboState::Idle;     // 콤보 완전 종료
     CurrentCombo = nullptr;
+}
+
+void UComboComponent::DoHitCheck()
+{
+    if (!CurrentCombo) return;
+
+    ACharacter* Owner = Cast<ACharacter>(GetOwner());
+    if (!Owner) return;
+
+    // 캐릭터 앞 방향으로 구체 충돌 체크
+    FVector Start = Owner->GetActorLocation();
+    FVector End = Start + Owner->GetActorForwardVector() * CurrentCombo->HitRange;
+
+    TArray<FHitResult> HitResults;
+    FCollisionShape Sphere = FCollisionShape::MakeSphere(CurrentCombo->HitRadius);
+
+    bool bHit = GetWorld()->SweepMultiByChannel(
+        HitResults,
+        Start,
+        End,
+        FQuat::Identity,
+        ECC_Pawn,
+        Sphere
+    );
+
+    if (!bHit) return;
+
+    // 디버그 : 히트 범위 시각화
+    DrawDebugSphere(
+        GetWorld(),
+        End,                    // 위치
+        CurrentCombo->HitRadius,// 반지름
+        12,                     // 세그먼트
+        FColor::Red,            // 색상
+        false,                  // 영구 표시 여부
+        1.0f                    // 표시 시간
+    );
+
+    for (FHitResult& Hit : HitResults)
+    {
+        AActor* HitActor = Hit.GetActor();
+
+        // 자기 자신 제외
+        if (!HitActor || HitActor == Owner) continue;
+
+        // Enemy가 아니면 스킵
+        AEnemyBase* HitEnemy = Cast<AEnemyBase>(HitActor);
+        if (!HitEnemy) continue;
+
+        // 데미지 전달
+        UGameplayStatics::ApplyDamage(
+            HitActor,                           // 데미지 받을 액터
+            CurrentCombo->Damage,               // 데미지량
+            Owner->GetController(),             // 가해자 컨트롤러
+            Owner,                              // 가해자 액터
+            UDamageType::StaticClass()          // 데미지 타입
+        );
+
+        // 적 타격 시 분노 증가
+        URageComponent* Rage = Owner->FindComponentByClass<URageComponent>();
+        if (Rage) Rage->AddRage();
+    }
 }
 
 

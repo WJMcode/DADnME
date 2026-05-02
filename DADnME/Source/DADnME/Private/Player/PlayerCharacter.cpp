@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "Player/DnMPlayerController.h"
 #include "Combat/Combo/ComboComponent.h"
+#include "Combat/Rage/RageComponent.h"
 #include "Player/PlayerCharacter.h"
 
 // Sets default values
@@ -36,6 +37,9 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationRoll = false;
 
 	ComboComponent = CreateDefaultSubobject<UComboComponent>(TEXT("ComboComponent"));
+
+	RageComponent = CreateDefaultSubobject<URageComponent>(TEXT("RageComponent"));
+
 }
 
 // Called when the game starts or when spawned
@@ -51,6 +55,15 @@ void APlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(IMC_Player, 0);
 		}
 	}
+
+	CurrentHP = MaxHP;
+}
+
+float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	CurrentHP = FMath::Clamp(CurrentHP - DamageAmount, 0.f, MaxHP);
+	RageComponent->OnDamaged(); // 피격 시 분노 감소
+	return DamageAmount;
 }
 
 // Called every frame
@@ -69,13 +82,13 @@ void APlayerCharacter::Tick(float DeltaTime)
 	}
 
 	// EPlayerMoveState가 열거형 이름이라고 가정할 때
-	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMoveState"), true);
-	FString StateName = EnumPtr ? EnumPtr->GetNameStringByValue((int64)PlayerMoveState) : TEXT("Invalid");
+	//const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMoveState"), true);
+	//FString StateName = EnumPtr ? EnumPtr->GetNameStringByValue((int64)PlayerMoveState) : TEXT("Invalid");
 
-	GEngine->AddOnScreenDebugMessage(
-		-1, 1.f, FColor::Magenta,
-		FString::Printf(TEXT("PlayerMoveState : %s"), *StateName) // %s와 * 연산자 사용
-	);
+	//GEngine->AddOnScreenDebugMessage(
+	//	-1, 1.f, FColor::Magenta,
+	//	FString::Printf(TEXT("PlayerMoveState : %s"), *StateName) // %s와 * 연산자 사용
+	//);
 
 	//GEngine->AddOnScreenDebugMessage(
 	//	-1,                    // Key

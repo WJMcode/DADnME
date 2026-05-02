@@ -21,6 +21,12 @@ public:
 
 	float CurrentHP;
 
+	UPROPERTY(EditAnywhere, Category = "Info")
+	FString EnemyName = TEXT("Enemy");
+
+	UPROPERTY(EditAnywhere, Category = "Info")
+	UTexture2D* FaceImage;
+
 public:
 	// Sets default values for this character's properties
 	AEnemyBase();

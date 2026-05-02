@@ -59,4 +59,5 @@ public:
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);	// AnimNotify에서 호출
 	void OnComboWindowClose();
+	void DoHitCheck();
 };
